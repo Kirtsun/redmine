@@ -1,0 +1,13 @@
+# Default setup is given for MySQL 5.7.7 or later.
+# Examples for PostgreSQL, SQLite3 and SQL Server can be found at the end.
+# Line indentation must be 2 spaces (no tabs).
+
+# PostgreSQL configuration example
+production:
+  adapter: postgresql
+  database: redmine
+  port: 5432
+  host: db_postgres
+  username: redmine
+  password: "postgres"
+

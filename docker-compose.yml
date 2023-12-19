@@ -1,0 +1,56 @@
+version: '3.7'
+
+
+services:
+  db_postgres:
+    container_name: db_postgres
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=redmine
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=redmine
+    ports:
+      - "5432:5432"
+    networks: 
+      - redmine_net
+    volumes: 
+      - postge_db:/var/lib/postgresql/data
+
+  redmine:
+    container_name: redmine_loc
+    build:  
+      context: .
+      dockerfile: redmine.Dockerfile
+    networks: 
+      - redmine_net
+      - nginx_net
+    expose:
+      - "3000"
+    depends_on:
+      - db_postgres
+ 
+  nginx:
+    container_name: nginx
+    image: nginx:1.25
+    networks:
+      - nginx_net
+    env_file:
+      - .env
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d
+      - ./nginx/cert:/etc/nginx/cert
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+    ports:
+      - "80:80"
+      - "${IP}:443:443"
+    depends_on:
+      - redmine
+    
+
+networks:
+  redmine_net:
+  nginx_net:
+    
+
+volumes:
+  postge_db:
