@@ -9,8 +9,8 @@ services:
       - POSTGRES_USER=redmine
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=redmine
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     networks: 
       - redmine_net
     volumes: 
