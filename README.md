@@ -1,5 +1,9 @@
 # Redmine
 
+Navigate to the folder where you want to download Redmine. 
+Run the redmine_download.sh script, redmine version 5.1.1 will be downloaded, this can be changed in the redmine_download.sh file.
+
+
 To get started you need to create the redmine user in the Postgres database, then you need to create the redmine database, the owner of the database should be the redmine user, the default password should be set by postgre. 
 
 In order to substitute the login data, you need to change the values in the config/database.yml file.
