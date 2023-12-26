@@ -55,3 +55,4 @@ nginx/cert/privateKey.key
 .stylelintignore
 
 .stylelintrc
+./.env

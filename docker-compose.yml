@@ -14,7 +14,7 @@ services:
     networks: 
       - redmine_net
     volumes: 
-      - postge_db:/var/lib/postgresql/data
+      - postgre_db:/var/lib/postgresql/data
 
   redmine:
     container_name: redmine_loc
@@ -53,4 +53,4 @@ networks:
     
 
 volumes:
-  postge_db:
+  postgre_db:
