@@ -3,7 +3,11 @@
 redmine_version="5.1.1"
 
 
-curl -o redmine.zip https://www.redmine.org/releases/redmine-$redmine_version.zip && unzip redmine.zip
+curl -o redmine.zip https://www.redmine.org/releases/redmine-$redmine_version.zip
+
+wait
+
+unzip redmine.zip
 
 rm redmine.zip && mv redmine-$redmine_version redmine
 

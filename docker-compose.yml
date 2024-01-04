@@ -18,9 +18,10 @@ services:
 
   redmine:
     container_name: redmine_loc
-    build:  
-      context: .
-      dockerfile: redmine.Dockerfile
+    image: kyrtsun/custom_redmine
+    volumes:
+      - redmine:/test/all_config
+      - nginx_conf:/test/all_config/nginx.con/conf
     networks: 
       - redmine_net
       - nginx_net
@@ -37,12 +38,11 @@ services:
     env_file:
       - .env
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d
-      - ./nginx/cert:/etc/nginx/cert
-      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+      - redmine:/etc/nginx/all_config/
+      - nginx_conf:/etc/nginx/conf.d
     ports:
       - "80:80"
-      - "${IP}:443:443"
+      - "443:443"
     depends_on:
       - redmine
     
@@ -54,3 +54,5 @@ networks:
 
 volumes:
   postgre_db:
+  redmine:
+  nginx_conf:

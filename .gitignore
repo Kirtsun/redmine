@@ -46,13 +46,10 @@
 
 /node_modules
 yarn-error.log
-.htpasswd
-nginx/cert/certificate.crt
-nginx/cert/privateKey.key
 .hgignore
 .rubocop.yml
 .rubocop_todo.yml
 .stylelintignore
 
 .stylelintrc
-./.env
+.env
