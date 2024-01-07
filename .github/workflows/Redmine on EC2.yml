@@ -23,7 +23,7 @@ jobs:
       run: |
         sudo chmod +x redmine_download.sh
         sudo ./redmine_download.sh
-        docker build -t kyrtsun/custom_redmine -f redmine.Dockerfile
+        docker build -t kyrtsun/custom_redmine .
         docker push kyrtsun/custom_redmine
 
   add_file:
@@ -55,7 +55,7 @@ jobs:
           overwrite: true
 
   deploy:
-    needs: build
+    needs: [build, add_file]
     runs-on: ubuntu-latest
 
     steps:
