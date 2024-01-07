@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.EC2_PORT }}
-          source: "red_nginx/conf/redmine.conf"
+          source: "redmine.conf"
           target: /home/ubuntu/nginx/ng_config
           overwrite: true
 
