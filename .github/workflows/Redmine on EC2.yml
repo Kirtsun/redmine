@@ -26,25 +26,60 @@ jobs:
         docker build -t kyrtsun/custom_redmine -f redmine.Dockerfile
         docker push kyrtsun/custom_redmine
 
+  add_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chekout
+        uses: actions/checkout@v3
+
+      - name: copy file to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          source: "red_nginx"
+          target: /home/ubuntu/nginx
+          overwrite: true
+
+      - name: copy wp docker file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          source: "docker-compose.yml"
+          target: /home/ubuntu/redmine
+          overwrite: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Log in EC2
       uses: appleboy/ssh-action@v0.1.7
       with:
-        host: ${{ secrets.EC2_HOST }}  
-        username: ${{ secrets.EC2_USERNAME }}  
-        key: ${{ secrets.EC2_KEY }} 
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_KEY }}
         port: ${{ secrets.EC2_PORT }}
 
         script: |
-          sudo docker stop nginx redmine_loc db_postgres
-          sudo docker rm nginx redmine_loc db_postgres
-          sudo docker rmi nginx:1.25 kyrtsun/custom_redmine postgres:15-alpine 
-          sudo docker rm -r redmine
-          sudo docker mkdir redmine && cd redmine
+          sudo docker stop nginx_nginx_1 redmine_loc db_postgres
+          sudo docker rm nginx_nginx_1 redmine_loc db_postgres
+          sudo docker rmi nginx:1.25 kyrtsun/custom_redmine postgres:15-alpine
+          docker network create nginx_redmine_net
           sudo touch deploy.txt
-          sudo snv export https://github.com/Kirtsun/redmine/trunk/docker-compose.yml
+          cd redmine
           docker-compose up -d 
           wait 
-          echo "It works! $(TZ="Europe/Kiev" date "+%A %d-%b-%Y %H:%M:%S %Z")" | sudo tee -a deploy.txt
+          cd .. &&c cd nginx && sudo docker-compose -up -d
+          wait
+          cd ..
+          echo "Redmine Work! $(TZ="Europe/Kiev" date "+%A %d-%b-%Y %H:%M:%S %Z")" | sudo tee -a deploy.txt
           
 
 

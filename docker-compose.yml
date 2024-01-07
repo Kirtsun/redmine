@@ -12,47 +12,27 @@ services:
     expose:
       - "5432"
     networks: 
-      - redmine_net
+      - redmine
     volumes: 
       - postgre_db:/var/lib/postgresql/data
 
   redmine:
     container_name: redmine_loc
     image: kyrtsun/custom_redmine
-    volumes:
-      - redmine:/test/all_config
-      - nginx_conf:/test/all_config/nginx.con/conf
     networks: 
-      - redmine_net
-      - nginx_net
+      - nginx_redmine_net
+      - redmine
     expose:
       - "3000"
     depends_on:
       - db_postgres
- 
-  nginx:
-    container_name: nginx
-    image: nginx:1.25
-    networks:
-      - nginx_net
-    env_file:
-      - .env
-    volumes:
-      - redmine:/etc/nginx/all_config/
-      - nginx_conf:/etc/nginx/conf.d
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - redmine
     
 
 networks:
-  redmine_net:
-  nginx_net:
+  nginx_redmine_net:
+    external: true
+  redmine:
     
 
 volumes:
   postgre_db:
-  redmine:
-  nginx_conf:
