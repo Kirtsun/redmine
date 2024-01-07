@@ -43,6 +43,17 @@ jobs:
           target: /home/ubuntu/nginx
           overwrite: true
 
+      - name: copy file to server"
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          source: "red_nginx/conf/redmine.conf"
+          target: /home/ubuntu/nginx/ng_config
+          overwrite: true
+
       - name: copy wp docker file
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -76,7 +87,7 @@ jobs:
           cd redmine
           docker-compose up -d 
           wait 
-          cd .. &&c cd nginx && sudo docker-compose -up -d
+          cd .. && cd nginx && sudo docker-compose -up -d
           wait
           cd ..
           echo "Redmine Work! $(TZ="Europe/Kiev" date "+%A %d-%b-%Y %H:%M:%S %Z")" | sudo tee -a deploy.txt
