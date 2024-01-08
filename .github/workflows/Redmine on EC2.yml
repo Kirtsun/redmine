@@ -87,7 +87,7 @@ jobs:
           cd redmine
           docker-compose up -d 
           wait 
-          cd .. && cd nginx && sudo docker-compose -up -d
+          cd .. && cd nginx && sudo docker-compose up -d
           wait
           cd ..
           echo "Redmine Work! $(TZ="Europe/Kiev" date "+%A %d-%b-%Y %H:%M:%S %Z")" | sudo tee -a deploy.txt

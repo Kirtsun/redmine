@@ -5,6 +5,7 @@ services:
   db_postgres:
     container_name: db_postgres
     image: postgres:15-alpine
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=redmine
       - POSTGRES_PASSWORD=postgres
@@ -19,6 +20,7 @@ services:
   redmine:
     container_name: redmine_loc
     image: kyrtsun/custom_redmine
+    restart: unless-stopped
     networks: 
       - nginx_redmine_net
       - redmine
