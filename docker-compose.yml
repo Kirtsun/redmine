@@ -19,7 +19,9 @@ services:
 
   redmine:
     container_name: redmine_loc
-    image: kyrtsun/custom_redmine
+    env_file:
+      - ./.env
+    image: kyrtsun/custom_redmine:${TAG}
     restart: unless-stopped
     networks: 
       - nginx_redmine_net

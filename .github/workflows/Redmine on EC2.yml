@@ -23,8 +23,8 @@ jobs:
       run: |
         sudo chmod +x redmine_download.sh
         sudo ./redmine_download.sh
-        docker build -t kyrtsun/custom_redmine .
-        docker push kyrtsun/custom_redmine
+        docker build -t kyrtsun/custom_redmine:${{ toJSON(github.run_number) }} .
+        docker push kyrtsun/custom_redmine:${{ toJSON(github.run_number) }}
 
   add_file:
     runs-on: ubuntu-latest
@@ -85,6 +85,8 @@ jobs:
           docker network create nginx_redmine_net
           sudo touch deploy.txt
           cd redmine
+          sudo rm .env
+          sudo touch .env && echo "TAG=${{ toJSON(github.run_number) }}" | sudo tee -a .env
           docker-compose up -d 
           wait 
           cd .. && cd nginx && sudo docker-compose up -d
